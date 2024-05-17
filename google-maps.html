@@ -5,23 +5,29 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8QCVwW6i0Ut4Tky0mThvxICIkrX2xMCk">
   </script>
   <script>
-    let map;
+    var poly;
+    var map;
+
     function initMap() {
-      const lat = 48.001844;    // Latitude of chosen center       
-      const lng = -72.474201;    // Longitude of chosen center                   
-      const mapOptions = {
-
-        center: new google.maps.LatLng(lat, lng),
-        zoom: 8,
-        mapTypeId: google.maps.MapTypeId.TERRAIN,
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
         streetViewControl: false,    // Disable street view             
-        zoomControl: false,  // Disable zoom control            
-        fullscreenControl: false, // Disable zooming by scroll,         
-        scrollwheel: false, // Disable zooming by scroll,  
+        center: { lat: 41.879, lng: -87.624 }  // Center the map on Chicago, USA.
+      });
 
-      };
-      map = new google.maps.Map(document.getElementById("map"), mapOptions);                      // Listen for the drag event            
+      poly = new google.maps.Polygon({
+        strokeColor: '#00DB00',
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+        fillColor: 'green',
+        fillOpacity: 0.25,
+        editable: true,
+        dragable: true
+      });
+      poly.setMap(map);
 
+      // Add a listener for the click event
+      map.addListener('click', addLatLng);
       google.maps.event.addListener(map, 'drag', function () {
         var center = map.getCenter();
         window.parent.postMessage({
@@ -31,21 +37,35 @@
         }, '*');
       });
     }
+
+    // Handles click events on a map, and adds a new point to the Polyline.
+    function addLatLng(event) {
+      var path = poly.getPath();
+
+      // Because path is an MVCArray, we can simply append a new coordinate
+      // and it will automatically appear.
+      path.push(event.latLng);
+
+    }
     function updateMapCenter(lat, lng, zoom) {
       const newCenter = new google.maps.LatLng(lat, lng); map.setCenter(newCenter);
       map.setZoom(zoom);
     }
 
     window.addEventListener('message', function (event) {
-      if (event.data && event.data.type === 'updateMapCenter') { updateMapCenter(event.data.lat, event.data.lng, event.data.zoom); }
+      if (event.data){
+        if (event.data.type === 'updateMapCenter') { updateMapCenter(event.data.lat, event.data.lng, event.data.zoom); }
+      }  
     }, false);
+
 
   </script>
 </head>
 
 <body onload="initMap()" style="margin:0;">
-  <div id="map" style="width:100%; height:100%;">
+  <div id="map" style="width:100%; height:80%;">
   </div>
 </body>
+<h1> testing maps</h1>
 
 </html>
