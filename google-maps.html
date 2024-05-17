@@ -1,45 +1,51 @@
 <html>
+
 <head>
-<title>Google Maps</title>
+  <title>Google Maps</title>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8QCVwW6i0Ut4Tky0mThvxICIkrX2xMCk">
-</script>
-<script>
-let map;                    
-function initMap() {            
-const lat = 48.001844;    // Latitude of chosen center       
-const lng = -72.474201;    // Longitude of chosen center                   
-const mapOptions = {       
-       
-    center: new google.maps.LatLng(lat, lng),              
-    zoom: 6,              
-    mapTypeId: google.maps.MapTypeId.TERRAIN,                         
-    streetViewControl: false,    // Disable street view             
-    zoomControl: false,  // Disable zoom control            
-    fullscreenControl: false, // Disable zooming by scroll,         
-    scrollwheel: false, // Disable zooming by scroll,  
-    
-                        };                      
-map = new google.maps.Map(document.getElementById("map"), mapOptions);                      // Listen for the drag event            
-                        
-google.maps.event.addListener(map, 'drag', function() {              var center = map.getCenter();              
-window.parent.postMessage({                
-    type: 'updateMapCenter',                
-    lat: center.lat(),                
-    lng: center.lng()              
-    }, '*');    
-    });        
-}                    
-function updateMapCenter(lat, lng, zoom) {            
-const newCenter = new google.maps.LatLng(lat, lng);            map.setCenter(newCenter);            
-map.setZoom(zoom);          
-}    
-                
-window.addEventListener('message', function(event) {            
-if (event.data && event.data.type === 'updateMapCenter') {              updateMapCenter(event.data.lat, event.data.lng, event.data.zoom);            }          }, false);     
-  
-</script>
+  </script>
+  <script>
+    let map;
+    function initMap() {
+      const lat = 48.001844;    // Latitude of chosen center       
+      const lng = -72.474201;    // Longitude of chosen center                   
+      const mapOptions = {
+
+        center: new google.maps.LatLng(lat, lng),
+        zoom: 8,
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
+        streetViewControl: false,    // Disable street view             
+        zoomControl: false,  // Disable zoom control            
+        fullscreenControl: false, // Disable zooming by scroll,         
+        scrollwheel: false, // Disable zooming by scroll,  
+
+      };
+      map = new google.maps.Map(document.getElementById("map"), mapOptions);                      // Listen for the drag event            
+
+      google.maps.event.addListener(map, 'drag', function () {
+        var center = map.getCenter();
+        window.parent.postMessage({
+          type: 'updateMapCenter',
+          lat: center.lat(),
+          lng: center.lng()
+        }, '*');
+      });
+    }
+    function updateMapCenter(lat, lng, zoom) {
+      const newCenter = new google.maps.LatLng(lat, lng); map.setCenter(newCenter);
+      map.setZoom(zoom);
+    }
+
+    window.addEventListener('message', function (event) {
+      if (event.data && event.data.type === 'updateMapCenter') { updateMapCenter(event.data.lat, event.data.lng, event.data.zoom); }
+    }, false);
+
+  </script>
 </head>
-<body onload="initMap()"style="margin:0;"><divid="map"style="width:100%; height:100%;">
-</div>
+
+<body onload="initMap()" style="margin:0;">
+  <div id="map" style="width:100%; height:100%;">
+  </div>
 </body>
+
 </html>
