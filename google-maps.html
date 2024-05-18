@@ -35,6 +35,10 @@
           lat: center.lat(),
           lng: center.lng()
         }, '*');
+        window.parent.postMessage({
+          type: 'polyArea',
+          area: google.maps.geometry.spherical.computeArea(path)
+        }, '*');
       });
     }
 
@@ -57,8 +61,8 @@
     }
 
     window.addEventListener('message', function (event) {
-      console.log(event)
       if (event.data){
+        console.log(event)
         if (event.data.type === 'updateMapCenter') { updateMapCenter(event.data.lat, event.data.lng, event.data.zoom); }
         if (event.data.type === 'resetPoly') { poly.setPath([]) }
       }  
