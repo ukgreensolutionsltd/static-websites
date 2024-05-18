@@ -37,7 +37,7 @@
         }, '*');
         window.parent.postMessage({
           type: 'polyArea',
-          area: google.maps.geometry.spherical.computeArea(path)
+          area: google.maps.geometry.spherical.computeArea(poly.getPath())
         }, '*');
       });
     }
