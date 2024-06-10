@@ -12,7 +12,8 @@
       map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         streetViewControl: false,    // Disable street view             
-        center: { lat: 41.879, lng: -87.624 },  // Center the map on Chicago, USA.
+        mapTypeControl: false, // Disable the map type control
+        center: { lat: 51.5074, lng: -0.1278 }, // Center the map on London, UK
         mapTypeId: google.maps.MapTypeId.SATELLITE // Set the map type to satellite
       });
 
