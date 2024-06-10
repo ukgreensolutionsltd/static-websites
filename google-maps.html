@@ -14,7 +14,9 @@
         streetViewControl: false,    // Disable street view             
         mapTypeControl: false, // Disable the map type control
         center: { lat: 51.5074, lng: -0.1278 }, // Center the map on London, UK
-        mapTypeId: google.maps.MapTypeId.SATELLITE // Set the map type to satellite
+        mapTypeId: google.maps.MapTypeId.SATELLITE, // Set the map type to satellite
+        tilt: 0,
+        rotateControl: false
       });
 
       poly = new google.maps.Polygon({
