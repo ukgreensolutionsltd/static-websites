@@ -54,9 +54,9 @@
       // and it will automatically appear.
       path.push(event.latLng);
       window.parent.postMessage({
-          type: 'polyArea',
-          area: google.maps.geometry.spherical.computeArea(path)
-        }, '*');
+        type: 'polyArea',
+        area: google.maps.geometry.spherical.computeArea(path)
+      }, '*');
 
     }
     function updateMapCenter(lat, lng, zoom) {
@@ -65,11 +65,11 @@
     }
 
     window.addEventListener('message', function (event) {
-      if (event.data){
-        console.log(event)
+      if (event.data) {
+        // console.log(event)
         if (event.data.type === 'updateMapCenter') { updateMapCenter(event.data.lat, event.data.lng, event.data.zoom); }
         if (event.data.type === 'resetPoly') { poly.setPath([]) }
-      }  
+      }
     }, false);
 
 
@@ -79,7 +79,7 @@
 <body onload="initMap()" style="margin:0;">
   <div id="map" style="width:100%; height:80%;">
   </div>
+  <h1> testing maps</h1>
 </body>
-<h1> testing maps</h1>
 
 </html>
