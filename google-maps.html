@@ -37,7 +37,8 @@
         window.parent.postMessage({
           type: 'updateMapCenter',
           lat: center.lat(),
-          lng: center.lng()
+          lng: center.lng(),
+          path: poly.getPath()
         }, '*');
         window.parent.postMessage({
           type: 'polyArea',
