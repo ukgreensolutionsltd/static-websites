@@ -38,7 +38,7 @@
           type: 'updateMapCenter',
           lat: center.lat(),
           lng: center.lng(),
-          path: JSON.stringify(poly.getPath())
+          path: getPolygonCoords(),
         }, '*');
         window.parent.postMessage({
           type: 'polyArea',
@@ -73,7 +73,15 @@
       }
     }, false);
 
-
+    function getPolygonCoords() {
+        var path = poly.getPath();
+        var coordinates = [];
+        for (var i = 0; i < path.getLength(); i++) {
+          var point = path.getAt(i);
+          coordinates.push({ lat: point.lat(), lng: point.lng() });
+        }
+        console.log(coordinates);
+        return coordinates;
   </script>
 </head>
 
