@@ -32,33 +32,37 @@
 
       // Add a listener for the click event
       map.addListener('click', addLatLng);
-      google.maps.event.addListener(map, 'drag', function () {
-        var center = map.getCenter();
-        window.parent.postMessage({
-          type: 'updateMapCenter',
-          lat: center.lat(),
-          lng: center.lng(),
-        }, '*');
-        window.parent.postMessage({
-          type: 'polyArea',
-          area: google.maps.geometry.spherical.computeArea(poly.getPath())
-        }, '*');
-      });
+      google.maps.event.addListener(map, 'drag', sendUpdatedMapCenter);
+      google.maps.event.addListener(poly.getPath(), 'insert_at', sendUpdatedArea);
+      google.maps.event.addListener(poly.getPath(), 'set_at', sendUpdatedArea);
     }
 
     // Handles click events on a map, and adds a new point to the Polyline.
     function addLatLng(event) {
       var path = poly.getPath();
-
       // Because path is an MVCArray, we can simply append a new coordinate
       // and it will automatically appear.
       path.push(event.latLng);
+      sendUpdatedArea();
+    }
+
+    function sendUpdatedArea() {
+      let path = poly.getPath();
       window.parent.postMessage({
         type: 'polyArea',
         area: google.maps.geometry.spherical.computeArea(path)
       }, '*');
-
     }
+    function sendUpdatedMapCenter() {
+      let center = map.getCenter();
+      window.parent.postMessage({
+        type: 'updateMapCenter',
+        lat: center.lat(),
+        lng: center.lng(),
+      }, '*');
+    }
+
+
     function updateMapCenter(lat, lng, zoom) {
       const newCenter = new google.maps.LatLng(lat, lng); map.setCenter(newCenter);
       map.setZoom(zoom);
